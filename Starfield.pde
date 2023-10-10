@@ -1,4 +1,5 @@
 Star[] field;
+StarShip ship;
 int starNum = 70;
 boolean warpOn = true;
 void setup()
@@ -11,6 +12,7 @@ void setup()
   {
     field[a] = new Star();
   }
+  ship = new StarShip();
 }
 
 void draw()
@@ -22,8 +24,10 @@ void draw()
     if (warpOn == true)
     {
       field[b].move();
+      ship.move();
     }
     field[b].show();
+    ship.show();
   }
 }
   
@@ -40,13 +44,12 @@ void mousePressed()
   
 class Star
 {
-  double xCoord, yCoord, speed, angle, type;
+  double xCoord, yCoord, speed, angle;
   float distance;
   Star()
   {
     xCoord = 250;
     yCoord = 250;
-    type = Math.random();
     speed = Math.random() * 10 + 1;
     angle = Math.random() * 2 * PI;
   }
@@ -58,7 +61,6 @@ class Star
     {
       xCoord = 250;
       yCoord = 250;
-      type = Math.random();
       speed = Math.random() * 8 + 1;
       angle = Math.random() * 2 * PI;
     }
@@ -66,7 +68,6 @@ class Star
     {
       xCoord = 250;
       yCoord = 250;
-      type = Math.random();
       speed = Math.random() * 8 + 1;
       angle = Math.random() * 2 * PI;
     }
@@ -96,16 +97,37 @@ class Star
       fill(255);
     }
     
-    //stars and oddballs
-    if (type > 0.01)
-    {
+    //star
       ellipse((float)xCoord, (float)yCoord, 2,2);
-    } else 
-    {
-      fill(153, 245, 110);
-      ellipse((float)xCoord, (float)yCoord , 5,5);
-      fill(70);
-      bezier((float)xCoord + 10, (float)yCoord + 5, (float)xCoord + 10, (float)yCoord, (float)xCoord -10, (float)yCoord, (float)xCoord - 10, (float)yCoord + 5);
     }
+}
+
+class StarShip extends Star
+{
+  void move()
+  {
+    xCoord += (speed * Math.cos(angle)) * .05;
+    yCoord += (speed * Math.sin(angle)) * .05;
+    if ((xCoord > 500) || (xCoord < 0))
+    {
+      xCoord = 250;
+      yCoord = 250;
+      speed = Math.random() * 3 + 1;
+      angle = Math.random() * 2 * PI;
+    }
+    if ((yCoord > 500) || (yCoord < 0))
+    {
+      xCoord = 250;
+      yCoord = 250;
+      speed = Math.random() * 3 + 1;
+      angle = Math.random() * 2 * PI;
+    }
+  }
+  void show()
+  {
+    fill(153, 245, 110);
+    ellipse((float)xCoord, (float)yCoord , 5,5);
+    fill(70);
+    bezier((float)xCoord + 10, (float)yCoord + 5, (float)xCoord + 10, (float)yCoord, (float)xCoord -10, (float)yCoord, (float)xCoord - 10, (float)yCoord + 5);
   }
 }
